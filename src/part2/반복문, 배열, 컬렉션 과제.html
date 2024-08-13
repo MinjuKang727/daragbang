@@ -1,0 +1,928 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>반복문, 배열, 컬렉션 과제</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="78421c50-3895-40b6-98c2-76f7cf42fb51" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🗒️</span></div><h1 class="page-title">반복문, 배열, 컬렉션 과제</h1><p class="page-description"></p></header><div class="page-body"><nav id="1e85d4c1-b542-401f-b6a3-70491618bf3a" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#5305b1a4-3e2c-45ec-ab8a-a1fff80ebfbf">학습 목표</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#3a9bdd65-7e4e-40c1-a69b-6cb5ac49be67">반복문</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#62c0cea7-a7d6-4481-9741-39856fbcb0a5">배열</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#94dda1fc-227c-4010-8800-6c077a6d1bab">Collection</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#8b1fef86-66af-462a-a3b2-bd86556ca62f">반복문</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#1f37cb74-320e-4b02-a7f8-fcf2a146c92f">문제 1) Iteration01.java</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#5f56bddc-59ca-4acf-923b-bc786840e4d4">문제 설명</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#128c5ae0-2c9e-4a88-9b63-013ab8da60ea">출력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#f5aab49a-3b0d-4118-8aae-5d89aa379d90">문제 2) Iteration02.java</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#015a8313-cb4e-4ba0-bd4b-a0a4bdeada96">문제 설명</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#57490d37-6952-4ed6-8128-32b87375832a">출력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#60a41893-9281-4255-bfd4-c6304aa9c0c5">문제 3) Iteration03.java</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#dab1a46f-b0f1-45f4-b2be-195c8c50a736">문제 설명</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#408e7cf0-a1e0-470b-8fee-ecaad700cf8a">출력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#0f99f6fb-d430-4271-813c-74f277496219">배열</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#e065db58-2ffa-40fb-9a7c-30b983575393">문제 1) Array01.java</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#27400c45-c2b7-4bf4-8b98-bdadcae354c8">문제 설명</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#0141f983-e9f9-437b-9127-ae8ecc08af9c">입력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#be90ece2-d867-4a41-8c24-b68839a4e50d">출력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#a34f3cb8-c90c-4af9-a717-e8717b1ac454">문제 2) Array02.java - 심화 문제</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#d84d12b3-f40d-45ff-ab87-03b0a1c10e0a">문제 설명</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#be9e917d-a194-40c5-a9d1-c913b162a5c0">출력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#0c5d49bc-0a1b-4902-955f-a06181fe2b26">컬렉션</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#5768e82a-d20a-4a08-80cf-113c6763e16d">문제 1) Collection01.java</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#7cc2f2e5-fba4-4761-b1df-44e881273250">문제 설명</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#84a57717-9035-4eb0-a25e-efb120e6fb01">입력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#7903ab2b-ea05-4694-b2d5-78d095f5a13e">출력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#a35a689f-6f86-4829-8b8b-c4ef41b17422">문제 2) Collection02.java</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#a927f87d-624e-4866-a5bc-769ba0926ccb">입력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#64a78d5c-ff56-4f56-b25a-7d625e17865c">출력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#f44f0d15-c4e8-4e8b-9976-21b9a1fd8c53">문제 3) Collection03.java</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#fa8ff21f-9a3b-4bef-b16b-24e20390955e">문제 설명</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#b058c0e1-8107-4e3c-a3da-28ad7fde346c">입력 예시</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#a6e0d968-3861-4fa0-94ec-c5e40789f573">출력 예시</a></div></nav><h1 id="5305b1a4-3e2c-45ec-ab8a-a1fff80ebfbf" class="">학습 목표</h1><hr id="eae46231-7c42-4875-b8cb-ffee6b1a9a02"/><h2 id="3a9bdd65-7e4e-40c1-a69b-6cb5ac49be67" class="">반복문</h2><ol type="1" id="5684c73b-4d10-4d01-8e67-4890b8b322d5" class="numbered-list" start="1"><li>반복문의 특징과 차이점을 명확히 인지할 수 있습니다.<ul id="8c4d12aa-0bf0-4ce7-bc23-ef05ab03868d" class="bulleted-list"><li style="list-style-type:disc">for, 향상된 for문, while, do while</li></ul></li></ol><ol type="1" id="63cd2382-d19b-4f56-91ba-5ff3dc10669a" class="numbered-list" start="2"><li>break, continue로 반복문의 흐름을 제어 할 수 있습니다.</li></ol><h2 id="62c0cea7-a7d6-4481-9741-39856fbcb0a5" class="">배열</h2><ol type="1" id="7676290e-707e-4e00-bc3b-0d17688611df" class="numbered-list" start="1"><li>배열을 선언, 생성하고 요소에 자유롭게 접근하여 작업할 수 있습니다.</li></ol><ol type="1" id="a503bd55-605f-4f53-ba9c-e14df92d054d" class="numbered-list" start="2"><li>2차원 배열을 만들어 사용해 볼 수 있습니다.</li></ol><h2 id="94dda1fc-227c-4010-8800-6c077a6d1bab" class="">Collection</h2><ol type="1" id="e98f2153-cb75-4e3c-8642-cf5f7fe7ec88" class="numbered-list" start="1"><li>컬렉션(List, Set, Map)이란 무엇이고 각 자료구조 별 특징과 차이를 알 수 있습니다.</li></ol><ol type="1" id="1b335f2e-8aa9-4fd3-b680-cbb59975a802" class="numbered-list" start="2"><li>컬렉션을 선언, 생성하고 로직을 자유롭게 꾸릴 수 있도록 주어지는 메소드(get, add, put 등) 사용할 수 있습니다.</li></ol><h1 id="8b1fef86-66af-462a-a3b2-bd86556ca62f" class="">반복문</h1><hr id="296b6cc6-accc-4c3e-9037-e661c15ca27a"/><h2 id="1f37cb74-320e-4b02-a7f8-fcf2a146c92f" class="">문제 1) Iteration01.java</h2><h3 id="5f56bddc-59ca-4acf-923b-bc786840e4d4" class="">문제 설명</h3><p id="3f32187e-6925-4b04-927e-52081d95c197" class="">변종 3, 6, 9 게임 : <strong><span style="border-bottom:0.05em solid">1의 자리에 3,6,9가 있는 경우에만 “짝”을 출력하고, 10의 배수인 경우에는 숫자를 출력하지 않고 다음 숫자로 넘깁니다. 나머지 경우에는 숫자를 그대로 출력</span></strong>해주세요.</p><h3 id="128c5ae0-2c9e-4a88-9b63-013ab8da60ea" class="">출력 예시</h3><p id="a6475912-3aa5-4386-97b0-46f62d638b6d" class="">n = 30일 때,아래와 같이 출력할 수 있습니다.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2af9bdc6-7b19-4f6f-8b9c-b3d9227d35da" class="code"><code class="language-Plain Text">1
+2
+짝
+4
+5
+짝
+(7~27까지 생략, 10과 20은 출력하지 않음)
+28
+짝 // 29까지는 출력하고, 30은 출력하지 않음</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="65251eda-802f-483d-9a82-e59081751080" class="code"><code class="language-Java">public class Iteration01 {
+
+    public static void main(String[] args) {
+        // 3~100까지 랜덤으로 연습할 수 지정합니다.
+        int n = (int) ((Math.random() * 98) + 3);
+        
+        // 숫자를 어디까지 연습할 지 출력해봅니다.
+        System.out.printf(&quot;%d까지 3, 6, 9 게임 연습 시작\n&quot;, n);
+        
+        /**
+         * 여기서부터 순서에 따라 구현을 해주세요
+         * 1. 반복문 ooo문을 선언합니다. 3, 6, 9 게임은 1부터 n까지 1씩 더하며 반복하면 됩니다.
+         * 2. 10의 배수인 경우 다음 숫자로 넘깁니다. 조건문인 oo문과 (i % 10)을 이용하고, oooooooo를 이용해봅니다.
+         * 3-1. 1의 자리가 3, 6, 9인 경우를 조건문(oo문)을 통해 찾아봅니다. (i % 10)을 이용하여 나머지를 구하는 것으로 찾아낼 수 있습니다.
+         *      -&gt; 3-1의 조건을 만족했다면) &quot;짝&quot;을 출력합니다.
+         * 3-2. 2-1의 조건을 만족하지 않은 경우를 위해 조건문(oooo문, 2-1과 세트)을 마저 이용합니다.
+         *      -&gt; 3-1 조건을 만족하지 않았다면) 숫자를 그대로 출력합니다.
+         */
+    }
+}</code></pre><h2 id="f5aab49a-3b0d-4118-8aae-5d89aa379d90" class="">문제 2) Iteration02.java</h2><h3 id="015a8313-cb4e-4ba0-bd4b-a0a4bdeada96" class="">문제 설명</h3><p id="2cad3cd6-ec5b-42e0-a827-4004b7fa2fe6" class="">광역시 출력 : <strong><span style="border-bottom:0.05em solid">주어진 도시 목록을 순차적으로 순회하면서 도시 앞에 “광역시 : ”를 붙여 출력</span></strong>해주세요.</p><h3 id="57490d37-6952-4ed6-8128-32b87375832a" class="">출력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="f3832ef7-6e3e-4a3c-8bb6-d8d3bf1b39e4" class="code"><code class="language-Plain Text">광역시 : 인천
+광역시 : 부산
+광역시 : 울산
+광역시 : 광주
+광역시 : 대전
+광역시 : 대구</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1decd478-a69b-4b85-9b70-18c8bf904279" class="code"><code class="language-Java">public class Iteration02 {
+    public static void main(String[] args) {
+    
+		    // 고정된 도시의 목록을 선언합니다.
+        String[] cities = {&quot;인천&quot;, &quot;부산&quot;, &quot;울산&quot;, &quot;광주&quot;, &quot;대전&quot;, &quot;대구&quot;};
+        
+        /**
+         * 여기서부터 순서에 따라 구현을 해주세요
+         * 1. 반복문 ㅎㅅㄷ ooo문을 선언합니다. 위의 cities 배열에서 각 요소에 순차적으로 접근합니다.
+         * 2. 광역시 : {도시}를 출력합니다.
+         */
+    }
+}</code></pre><h2 id="60a41893-9281-4255-bfd4-c6304aa9c0c5" class="">문제 3) Iteration03.java</h2><h3 id="dab1a46f-b0f1-45f4-b2be-195c8c50a736" class="">문제 설명</h3><p id="4da165ab-e003-472e-be27-c827b3f59837" class="">연속으로 야근한 날짜 출력 : <strong><span style="border-bottom:0.05em solid">80% 확률로 야근을 한다고 할 때, 연속으로 야근한 날이 며칠인지 출력</span></strong>해주세요. 단, 합법적으로 <strong><span style="border-bottom:0.05em solid">연속으로 야근할 수 있는 날은 최대 10일이며, 야근을 전혀 하지 않은 경우는 0일로 계산</span></strong>합니다.</p><h3 id="408e7cf0-a1e0-470b-8fee-ecaad700cf8a" class="">출력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="5b463cbe-abec-4bac-ac51-5d480777010d" class="code"><code class="language-Plain Text">보셨나요? 저의 10일 연속 야근!</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="c60c4c8e-0287-4a29-81f1-2bc3b1a01294" class="code"><code class="language-Java">public class Iteration03 {
+
+    public static void main(String[] args) {
+        // 야근한 날을 계산하기 위해 변수를 선언합니다.
+        int overworkDays = 0;
+        
+        /**
+         * 여기서부터 순서에 따라 구현을 해주세요
+         * 1. 반복문 ooooo문을 선언합니다. 조건식은 야근 확률인 80%를 구현하기 위해 (Math.random() &lt; 0.8)를 사용할 수 있습니다.
+         * 2. 야근할 확률에 당첨되었다면(조건문이 참이라면), 야근한 날을 1일씩 더해줍니다.
+         * 3. 야근한 날짜가 10일이 되었는지 oo문을 통해 확인합니다.
+         *      -&gt; 10일이 되었다면, 더 이상의 야근은 불법이므로 반복문을 ooooo 키워드를 이용하여 빠져나갑니다.
+         */
+
+        // 야근 일 수를 출력해줍니다.
+        System.out.printf(&quot;보셨나요? 저의 %d일 연속 야근!&quot;, overworkDays);
+    }
+}</code></pre><h1 id="0f99f6fb-d430-4271-813c-74f277496219" class="">배열</h1><hr id="b32684b9-005a-45d3-9a9c-1975edabc14f"/><h2 id="e065db58-2ffa-40fb-9a7c-30b983575393" class="">문제 1) Array01.java</h2><h3 id="27400c45-c2b7-4bf4-8b98-bdadcae354c8" class="">문제 설명</h3><p id="17f2de52-b406-44ad-a501-6484b32e8c9b" class="">광역시 입력 받기 : 대한민국에는 서울특별시를 제외하고 <strong><span style="border-bottom:0.05em solid">총 6개의 광역시가 있습니다. 광역시를 입력받아 배열에 추가</span></strong>해주세요.</p><div id="f44d68af-4556-4136-adad-52d8f76dae0a" class="column-list"><div id="b77e92a2-ef8f-44b0-84a1-3d3e5b6707bb" style="width:100%" class="column"><h3 id="0141f983-e9f9-437b-9127-ae8ecc08af9c" class="">입력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ffd5f6c3-08a6-4c1b-b8da-ca487ec8ffd9" class="code"><code class="language-Plain Text">광역시 6개를 차례대로 입력해주세요. 엔터로 도시를 구분해주세요.
+부산
+대전
+울산
+광주
+인천
+대구</code></pre></div><div id="8506f9b3-4816-4b41-b81c-db1ba88cd21c" style="width:100%" class="column"><h3 id="be90ece2-d867-4a41-8c24-b68839a4e50d" class="">출력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="64f70245-befa-4304-a4e8-bc9013ccd674" class="code"><code class="language-Plain Text">부산광역시
+대전광역시
+울산광역시
+광주광역시
+인천광역시
+대구광역시</code></pre></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="cacc44f3-efae-47f0-a638-e8579aa95224" class="code"><code class="language-Java">import java.util.Scanner;
+
+public class Array01 {
+    public static void main(String[] args) {
+
+        // 콘솔 입력을 받기 위한 Scanner 객체를 선언합니다.
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println(&quot;광역시 6개를 차례대로 입력해주세요. 엔터로 도시를 구분해주세요.&quot;);
+
+        /**
+         * 여기서부터 순서에 따라 구현을 해주세요
+         * 1. 광역시를 저장할 크기가 6인 String 배열을 생성, 선언합니다.
+         * 2. 광역시를 6개 받아 차례대로 배열에 넣기 위해 배열의 길이만큼 반복하는 ooo문을 작성합니다.
+         * 3. scan.nextLine()을 이용하여 콘솔에서 광역시를 받고, 반복문을 통해 배열의 요소에 인덱스로 접근하여 입력한 광역시를 넣어줍니다.
+         */
+         
+        // 향상된 for문으로 배열을 차례로 순회하며 출력합니다.
+        for(String city : cities) {
+            System.out.printf(&quot;%s광역시\n&quot;, city);
+        }
+
+    }
+}
+</code></pre><h2 id="a34f3cb8-c90c-4af9-a717-e8717b1ac454" class="">문제 2) Array02.java - 심화 문제</h2><h3 id="d84d12b3-f40d-45ff-ab87-03b0a1c10e0a" class="">문제 설명</h3><p id="c4fe2f7a-f702-4dfd-bbe8-ed61878d45e2" class="">구구단 저장하기 : <strong><span style="border-bottom:0.05em solid">2차원 배열에 행 인덱스와 열 인덱스를 곱한 값을 저장한 후에 출력</span></strong>하려고 합니다. <strong><span style="border-bottom:0.05em solid">출력은 2단부터 9단까지</span></strong> 하면 됩니다.</p><h3 id="be9e917d-a194-40c5-a9d1-c913b162a5c0" class="">출력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="9d353ebb-2ecb-4f0b-8aae-fedfbd0f7c11" class="code"><code class="language-Plain Text">2 * 1 = 2
+2 * 2 = 4
+2 * 3 = 6
+2 * 4 = 8
+(생략)
+9 * 7 = 63
+9 * 8 = 72
+9 * 9 = 81</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="52b92c2b-3f35-4cb0-a07a-9afb63b29a38" class="code"><code class="language-Java">public class Array02 {
+    public static void main(String[] args) {
+        /**
+         * 여기서부터 순서에 따라 구현을 해주세요
+         * 1. 구구단을 저장하기 위해 2차원 배열을 선언, 생성합니다. 행 인덱스*열 인덱스를 곱한 값을 저장하므로 10*10 크기로 배열을 만듭니다.
+         * 2. 배열의 행을 순회하기 위해 반복문을 사용합니다.
+         * 3. 배열의 열을 순회하기 위해 반복문을 사용합니다.
+         * 4. 배열의 요소 중 [i][j] 칸에 i*j를 계산한 값을 넣어줍니다.
+         *
+         * 5. 구구단을 2단부터 9단까지 출력하기 위해 인덱스를 2이상 9이하까지 행을 순회하는 반복문을 사용합니다.
+         * 6. 구구단을 출력하기 위해 인덱스를 1이상 9이하까지 열을 순회하는 반복문을 사용합니다.
+         * 7. i * j = (i*j) 형식으로 출력합니다. ex) 2 * 1 = 2
+         */
+    }
+}</code></pre><h1 id="0c5d49bc-0a1b-4902-955f-a06181fe2b26" class="">컬렉션</h1><hr id="ae3a6da9-4c83-47b5-832f-fee5597285c1"/><h2 id="5768e82a-d20a-4a08-80cf-113c6763e16d" class="">문제 1) Collection01.java</h2><h3 id="7cc2f2e5-fba4-4761-b1df-44e881273250" class="">문제 설명</h3><p id="1abc60a2-b7f4-44f9-905b-dcddaaf101bd" class="">전국의 도시 이름 받기 : 전국의 <strong><span style="border-bottom:0.05em solid">도시를 계속 입력 받아 List에 저장하고, exit를 입력하면 도시 입력을 중지</span></strong>합니다. 만약, <strong><span style="border-bottom:0.05em solid">추가하려는 도시 이름이 이미 List에 있다면 추가하지 않습니다.</span></strong></p><p id="c78ca718-7536-4811-86ea-8f62201e86b7" class="">이후, <strong><span style="border-bottom:0.05em solid">List의 크기를 출력</span></strong>하고 <strong><span style="border-bottom:0.05em solid">List에 저장된 요소를 역순으로 출력</span></strong>합니다. <strong><span style="border-bottom:0.05em solid">추가한 도시가 없는 경우에는 “도시 목록이 비어있습니다.”를 출력</span></strong>해주세요.</p><div id="b70bd5bb-6a02-4f01-a4f0-235ae65c0fdc" class="column-list"><div id="42f11df2-a6f1-4b19-b961-3642f23276f9" style="width:100%" class="column"><h3 id="84a57717-9035-4eb0-a25e-efb120e6fb01" class="">입력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="7dc4cd40-1860-4401-ab28-b776b681a221" class="code"><code class="language-Plain Text">서울
+인천
+파주
+고양
+서울
+춘천
+원주
+부산
+부산
+창원
+exit</code></pre></div><div id="c3549a52-bef4-463d-927a-e1925ce5e188" style="width:100%" class="column"><h3 id="7903ab2b-ea05-4694-b2d5-78d095f5a13e" class="">출력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="b0905f58-006c-40bb-8f32-77c3bf1e1bca" class="code"><code class="language-Plain Text">도시의 개수 : 8
+창원
+부산
+원주
+춘천
+고양
+파주
+인천
+서울</code></pre></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="4e9c2a70-8078-4c0f-8eb0-8f0b52ba69d6" class="code"><code class="language-Java">import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Collection01 {
+    public static void main(String[] args) {
+        // 콘솔 입력을 받기 위한 Scanner 객체를 선언합니다.
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println(&quot;도시 목록을 입력합니다.&quot;);
+
+        /**
+         * 여기서부터 순서에 따라 구현을 해주세요
+         * 1. 도시 목록을 받을 List를 선언, 생성합니다.
+         *
+         * 2. exit가 들어올 때 까지 반복하기 위해 ooooo문에 조건을 true로 설정합니다.
+         * 3. 도시를 콘솔 입력으로 받기 위해 scan.nextLine()으로 받아 String 자료형(변수명 : city)에 할당합니다.
+         * 4. city 값이 exit인 경우를 조건문인 oo문을 통해 찾습니다.
+         *      -&gt; 4번의 조건에 부합하는 경우, 반복문을 나가기 위해 ooooo를 사용합니다.
+         * 5. 도시 목록에 city로 받은 도시 이름이 없는 경우를 조건문인 oo문을 통해 찾습니다.
+         *      -&gt; 5번의 조건에 부합하는 경우, 도시 목록에 city를 추가합니다.
+         *
+         * 6. 도시의 개수를 옆의 형식과 같이 출력합니다. (도시의 개수 : {개수})
+         *
+         * 7-1. 조건문인 oo문과 List의 isEmpty 메소드를 이용하여 List가 비어있는지 확인합니다.
+         *      -&gt; 도시 목록이 비어있습니다. 를 출력합니다.
+         * 7-2. 7-1 조건에 해당하지 않은 경우를 위해 조건문인 oooo문을 이용합니다.
+         *      -&gt; 도시 목록의 역순 출력을 위해 반복문 ooo를 사용하고, 초기문을 size() 메소드를 이용하여 인덱스를 지정합니다.
+         *      -&gt; List의 요소에 접근하여 도시를 출력합니다.
+         */
+    }
+}</code></pre><h2 id="a35a689f-6f86-4829-8b8b-c4ef41b17422" class="">문제 2) Collection02.java</h2><p id="5faedd4c-3a54-4a12-b40b-50a6a438c00c" class="">전국의 도시 이름 받기 2 : 이전 Collection01.java에서는 중복된 도시 이름을 거르기 위해 별도의 로직이 필요했습니다. 이제는 <strong><span style="border-bottom:0.05em solid">중복을 처리하기 </span></strong><del><strong><span style="border-bottom:0.05em solid">귀찮으니</span></strong></del><strong><span style="border-bottom:0.05em solid"> 비효율적이니 Set을 사용</span></strong>해보고자 합니다.</p><p id="648f1f8f-4ec7-45e3-8ea1-7186dc172306" class="">Collection01.java와 같이 <strong><span style="border-bottom:0.05em solid">exit 입력을 받기 전까지 도시 이름을 입력 받아 Set에 저장</span></strong>해봅니다. 추가적으로 이번에는 스파이를 색출하기 위해 도시를 모두 받은 이후에 <strong><span style="border-bottom:0.05em solid">“평양”이라는 도시가 Set에 있다면 삭제</span></strong>해줍시다.</p><p id="0abfc2f9-58bf-4d7c-b357-33fdacfd619c" class=""><strong><span style="border-bottom:0.05em solid">Set은 </span></strong>향상된 for문으로 요소에 접근하여 요소를 모두 출력할 수 있지만, <del>귀찮기 때문에</del> <strong><span style="border-bottom:0.05em solid">toString() 메소드를 이용하여 명시적으로 반복문을 작성하지 않고 출력</span></strong>하려고 합니다. 마찬가지로, 입력한 도시가 없거나, 모두 스파이로 색출되어 <strong><span style="border-bottom:0.05em solid">도시 Set이 비어있는 경우에는 “도시 목록이 비어있습니다.”를 출력</span></strong>해주세요.</p><div id="dd363715-e07c-4f01-8bb1-ba4987d4913e" class="column-list"><div id="e0a66443-c3a3-4179-810f-490b0a432e2a" style="width:100%" class="column"><h3 id="a927f87d-624e-4866-a5bc-769ba0926ccb" class="">입력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="9a714e2f-d41a-4640-9e2c-05d2fc3dc7b0" class="code"><code class="language-Plain Text">서울
+인천
+파주
+서울
+평양
+평양
+서울
+exit</code></pre></div><div id="5a1c2fda-f99b-4570-9932-83d269453e07" style="width:100%" class="column"><h3 id="64a78d5c-ff56-4f56-b25a-7d625e17865c" class="">출력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="a8190049-26ac-43c4-a38d-8ef11c729e97" class="code"><code class="language-Plain Text">도시의 개수 : 3
+[서울, 파주, 인천]</code></pre><p id="5c6baa9e-723e-429b-93a5-6380738e4e24" class="">
+</p></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="7f0de423-29cf-4bec-88c5-de2f271cff37" class="code"><code class="language-Java">import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
+
+public class Collection02 {
+    public static void main(String[] args) {
+        // 콘솔 입력을 받기 위한 Scanner 객체를 선언합니다.
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println(&quot;도시 목록을 입력합니다.&quot;);
+
+        /**
+         * 여기서부터 순서에 따라 구현을 해주세요
+         * 1. 도시 목록을 받을 Set를 선언, 생성합니다.
+         *
+         * 2. exit가 들어올 때 까지 반복하기 위해 ooooo문에 조건을 true로 설정합니다.
+         * 3. 도시를 콘솔 입력으로 받기 위해 scan.nextLine()으로 받아 String 자료형(변수명 : city)에 할당합니다.
+         * 4. city 값이 exit인 경우를 조건문인 oo문을 통해 찾습니다.
+         *      -&gt; 4번의 조건에 부합하는 경우, 반복문을 나가기 위해 ooooo를 사용합니다.
+         * 5. 도시 목록에 city를 추가합니다.
+         *
+         * 6. Set에 입력 받은 도시를 모두 저장한 후, &quot;평양&quot;이라는 도시를 지웁니다. (조건문을 추가하셔도 좋습니다!)
+         * 7. 도시의 개수를 옆의 형식과 같이 출력합니다. (도시의 개수 : {개수})
+         *
+         * 8-1. 조건문인 oo문과 Set의 isEmpty 메소드를 이용하여 Set이 비어있는지 확인합니다.
+         *      -&gt; 도시 목록이 비어있습니다. 를 출력합니다.
+         * 8-2. 7-1 조건에 해당하지 않은 경우를 위해 조건문인 oooo문을 이용합니다.
+         *      -&gt; Set의 toString() 메소드를 이용하여 도시를 출력합니다.
+         */
+    }
+}
+</code></pre><h2 id="f44f0d15-c4e8-4e8b-9976-21b9a1fd8c53" class="">문제 3) Collection03.java</h2><h3 id="fa8ff21f-9a3b-4bef-b16b-24e20390955e" class="">문제 설명</h3><p id="ca9a686b-d597-4458-b86d-2f27df663eec" class="">전국의 도시 이름과 소재지 받기 : 이전 Collection01과 02에서는, 단순히 도시 이름만 저장하였기 때문에 이 도시가 어느 도에 위치해 있는지 저장할 수 없었습니다.</p><p id="b6c4d42a-339a-4b6e-8d80-6d335bdc97af" class="">따라서 이번에는 <strong><span style="border-bottom:0.05em solid">도시 이름과 소재지(경기도, 강원도, 충청북도 등)을 key-value 쌍으로 입력하고 저장하여 출력</span></strong>해보도록 하겠습니다.</p><p id="22069fd5-c06c-4a78-a16e-0e003ff7f310" class=""><strong><span style="border-bottom:0.05em solid">도시 이름은 유일무이 하지만, 소재지는 겹칠 수 있기 때문</span></strong>에 <strong><span style="border-bottom:0.05em solid">입력 값에 누락이 없도록 key와 value를 잘 설정</span></strong>해 주어야 합니다.</p><p id="b6c68d36-736f-4529-94dc-ff34667216cd" class="">만약, <strong><span style="border-bottom:0.05em solid">도시 이름이 중복되어 들어온 경우에는 소재지가 업데이트 되지 않도록</span></strong> 해주세요.</p><p id="8fa3f96c-8d0c-4351-ad9c-dd12455fba7c" class="">마찬가지로, <strong><span style="border-bottom:0.05em solid">exit 입력을 받기 전까지만 도시와 소재지를 저장</span></strong>합니다.</p><div id="f1d37f03-0992-416d-91ce-8ebd06839792" class="column-list"><div id="2626b0b8-873f-4d87-b2a6-3a8de026310e" style="width:100%" class="column"><h3 id="b058c0e1-8107-4e3c-a3da-28ad7fde346c" class="">입력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="e0e6ad2a-ca24-416d-8773-05e3b770369b" class="code"><code class="language-Plain Text">원주 강원도
+충주 충청북도
+창원 경상남도
+수원 경기도
+성남 경기도
+성남 경상남도</code></pre></div><div id="16037477-64de-4f74-b010-b158fa9e909e" style="width:100%" class="column"><h3 id="a6e0d968-3861-4fa0-94ec-c5e40789f573" class="">출력 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1480dd79-2498-48ce-8175-635d8b183dec" class="code"><code class="language-Plain Text">원주은(는) 강원도에 있습니다.
+충주은(는) 충청북도에 있습니다.
+창원은(는) 경상남도에 있습니다.
+수원은(는) 경기도에 있습니다.
+성남은(는) 경기도에 있습니다.</code></pre></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="aee52744-ef80-42bd-94f4-4da75d3626d3" class="code"><code class="language-Java">import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Collection03 {
+    public static void main(String[] args) {
+        // 콘솔 입력을 받기 위한 Scanner 객체를 선언합니다.
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println(&quot;도시와 소재지를 차례로 입력합니다. 형식 : {도시} {소재지}&quot;);
+
+        /**
+         * 여기서부터 순서에 따라 구현을 해주세요
+         * 1. 도시와 소재지를 받기 위해 Map을 선언, 생성합니다. 도시, 소재지 모두 String 타입입니다.
+         *
+         * 2. exit가 들어올 때 까지 반복하기 위해 ooooo문에 조건을 true로 설정합니다.
+         * 3. 입력 값을 콘솔 입력으로 받기 위해 scan.nextLine()으로 받아 String 자료형(변수명 : input)에 할당합니다.
+         * 4. input 값이 exit인 경우를 조건문인 oo문을 통해 찾습니다.
+         *      -&gt; 4번의 조건에 부합하는 경우, 반복문을 나가기 위해 ooooo를 사용합니다.
+         * 5. String 배열(변수명 : separatedInput)을 선언하고, input.split(&quot; &quot;)를 이용하여 문자열을 공백 기준으로 나눈 것을 배열에 할당합니다.
+         *    (이 때, input.split(&quot; &quot;)를 통해 길이가 2인 String 배열이 만들어집니다. 도시는 separatedInput[0], 소재지는 separatedInput[1]이 됩니다.)
+         * 6. 조건문인 oo문으로 도시가 존재하지 않는 경우를 Map의 containsKey 메소드에 seperatedInput[0]을 파라미터로 넘겨 확인합니다.
+         *      -&gt; 6번의 조건에 부합하면, 도시와 소재지를 Map에 추가합니다.
+         *    (혹은, 조건문을 이용하지 않고 Map의 putIfAbsent 메소드로 key값이 없는 경우에만 추가하도록 할 수 있습니다.)
+         *
+         * 7. Map의 keySet()을 순회하기 위해 ㅎㅅㄷ ooo문을 선언합니다.
+         * 8. 형식대로 도시와 소재지를 출력해줍니다.
+         */
+    }
+}</code></pre></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
