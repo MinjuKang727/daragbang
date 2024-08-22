@@ -8,7 +8,7 @@ public class AntiPattern {
     // 1. catch문 body를 비워둔 경우
     public int swallow(String str) {
         try {
-            ////
+
         } catch (Exception e) {} // <===== 꿀꺽
 
         return 0;
